@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from shared import send_obj, find_keyboard
-import sys, signal
+import signal
 
 from evdev import categorize, ecodes as e, InputDevice
 import asyncio
@@ -13,6 +13,14 @@ async def run():
         try:
             if event.type == e.EV_KEY:
                 key_event = categorize(event)
+                match key_event.keystate:
+                    case 0:
+                        pass
+                    case 1:
+                        pass
+                    case _:
+                        continue 
+                        
                 send_obj(key_event)
         except BrokenPipeError:
             exit(0)
