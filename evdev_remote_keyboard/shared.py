@@ -10,6 +10,7 @@ UTF8 = "utf-8"
 def find_keyboard(verbose = False) -> InputDevice:
     devices = [InputDevice(path) for path in list_devices()]
     for device in devices:
+        print(f"Device: ${device.path} ${device.name}")
         if "keyboard" in str(device.name).lower():
             if verbose:
                 print(f"Keyboard found ${device.path} ${device.name}")
