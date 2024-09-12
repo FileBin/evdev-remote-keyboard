@@ -23,6 +23,7 @@ async def run():
                         
                 send_obj(key_event)
         except BrokenPipeError:
+            print("\nERR:BROKEN_PIPE")
             exit(0)
 
 def signal_handler(sig, frame):

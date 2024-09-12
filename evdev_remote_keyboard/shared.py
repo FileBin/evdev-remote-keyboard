@@ -5,6 +5,7 @@ from evdev import InputDevice, list_devices
 import sys, asyncio
 
 PREFIX = "OBJ:"
+ERR_PREFIX = "ERR:"
 UTF8 = "utf-8"
 
 def find_keyboard(verbose = False) -> InputDevice:
@@ -32,9 +33,11 @@ class Receiver:
 
     async def receive_obj(self):
         BYTEPREFIX = PREFIX.encode(UTF8)
+        BYTE_ERR_PREFIX = ERR_PREFIX.encode(UTF8)
         while True:
             line = await self.reader.readline()
-            if not line.startswith(BYTEPREFIX):
-                continue
-            b64str = line.removeprefix(BYTEPREFIX)
-            return loads(b64decode(b64str))
+            if line.startswith(BYTEPREFIX):
+                b64str = line.removeprefix(BYTEPREFIX)
+                return loads(b64decode(b64str))
+            if line.startswith(BYTE_ERR_PREFIX):
+                raise BrokenPipeError()
