@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "evdev-remote-keyboard"
+version = "0.1.0"
+description = ""
+authors = ["filebin <alex.mousse9@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+evdev = "^1.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
