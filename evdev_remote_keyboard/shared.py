@@ -23,6 +23,15 @@ def send_obj(o):
     sys.stdout.write(PREFIX+encoded_obj+'\n')
     sys.stdout.flush()
     
+def receive_obj():
+    while True:
+        line = sys.stdin.readline()
+        if line.startswith(PREFIX):
+            b64str = line.removeprefix(PREFIX)
+            return loads(b64decode(b64str))
+        if line.startswith(ERR_PREFIX):
+            raise BrokenPipeError()
+    
 class Receiver:
     reader = asyncio.StreamReader()
     
@@ -36,6 +45,9 @@ class Receiver:
         BYTE_ERR_PREFIX = ERR_PREFIX.encode(UTF8)
         while True:
             line = await self.reader.readline()
+            if self.reader.at_eof():
+                raise BrokenPipeError()
+        
             if line.startswith(BYTEPREFIX):
                 b64str = line.removeprefix(BYTEPREFIX)
                 return loads(b64decode(b64str))

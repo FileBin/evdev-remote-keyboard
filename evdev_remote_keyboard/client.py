@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from evdev import UInput, ecodes as e
-import asyncio
+import asyncio, signal
 from shared import Receiver
 
 ui = UInput()
@@ -24,7 +24,7 @@ async def run():
                 print(f"Recieved: ${key_event}")
                 ui.write_event(key_event)
                 ui.syn()
-        except BrokenPipeError:
+        finally:
             ui.write(e.EV_KEY, e.KEY_LEFTCTRL, 0)
             ui.write(e.EV_KEY, e.KEY_LEFTALT, 0)
             ui.write(e.EV_KEY, e.KEY_LEFTSHIFT, 0)
